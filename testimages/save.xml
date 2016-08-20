@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tagset>
+  <video>
+    <videoName>depth</videoName>
+    <object nr="1" class="7">
+      <bbox x="57" y="49" width="163" height="155" framenr="211" framefile="/home/jogue/workspace/datasets/ONERA.ROOM/one_2016-04-28-17-45-25/depth/0000211-000001124452.png"/>
+    </object>
+  </video>
+</tagset>

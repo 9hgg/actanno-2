@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tagset>
+  <video>
+    <videoName></videoName>
+    <action nr="1" class="-1">
+      <bbox x="512" y="93" width="140" height="113" framenr="1"/>
+      <bbox x="512" y="93" width="140" height="113" framenr="2"/>
+      <bbox x="512" y="93" width="140" height="113" framenr="3"/>
+      <bbox x="512" y="93" width="140" height="113" framenr="4"/>
+      <bbox x="512" y="93" width="140" height="113" framenr="5"/>
+      <bbox x="512" y="93" width="140" height="113" framenr="6"/>
+      <bbox x="512" y="93" width="140" height="113" framenr="7"/>
+      <bbox x="512" y="93" width="140" height="113" framenr="8"/>
+      <bbox x="446" y="244" width="139" height="113" framenr="9"/>
+      <bbox x="446" y="244" width="139" height="113" framenr="10"/>
+    </action>
+    <action nr="2" class="-1">
+      <bbox x="538" y="126" width="53" height="42" framenr="1"/>
+      <bbox x="538" y="126" width="53" height="42" framenr="2"/>
+      <bbox x="538" y="126" width="53" height="42" framenr="3"/>
+      <bbox x="538" y="126" width="53" height="42" framenr="4"/>
+      <bbox x="538" y="126" width="53" height="42" framenr="5"/>
+      <bbox x="538" y="126" width="53" height="42" framenr="6"/>
+      <bbox x="538" y="126" width="53" height="42" framenr="7"/>
+      <bbox x="538" y="126" width="53" height="42" framenr="8"/>
+      <bbox x="178" y="38" width="53" height="41" framenr="9"/>
+      <bbox x="178" y="40" width="53" height="41" framenr="10"/>
+    </action>
+    <action nr="3" class="-1">
+      <bbox x="335" y="138" width="188" height="188" framenr="6"/>
+      <bbox x="203" y="138" width="320" height="234" framenr="7"/>
+      <bbox x="121" y="190" width="319" height="233" framenr="8"/>
+      <bbox x="121" y="190" width="319" height="233" framenr="9"/>
+      <bbox x="121" y="190" width="319" height="233" framenr="10"/>
+    </action>
+  </video>
+</tagset>
