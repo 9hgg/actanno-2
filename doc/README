@@ -1,0 +1,71 @@
+
+Actanno est un outil interactif d'annotation de vidéo (stockée sous la forme d'une séquence d'images). Des boites englobantes peuvent être tracées sur une image, puis automatiquement propagées sur les images suivantes en utilisant un algorithme de tracking. Le résultat est stocké dans un fichier XML lisible par l'outil HARLEval.
+
+L'utilitaire Actanno est codé en Python. La librairie de tracking est codé en C++.
+
+
+DEPENDANCES
+
+ - Python 2.x
+ - module Python Tkinter (Ubuntu: aptitude install python-tk)
+ - module Python ImageTk (Ubuntu: aptitude install python-imaging-tk)
+ - gcc (Linux uniquement)
+
+
+INSTALLATION
+
+1) télécharger Actanno
+
+  $ svn checkout https://svn.liris.cnrs.fr/lirisvis/trunk/Applications/ConfusionMatrix/Actanno
+
+2) Sous Linux, compiler la librairie de tracking :
+
+  $ cd Actanno/src/boxtracking
+  $ make
+  $ ls *.so
+    libboxtracking.so
+
+La librairie de tracking précompilée est fournie pour Windows (Actanno/src/blibboxtracking.dll).
+
+
+UTILISATION
+
+python ./actanno.py rgb test.xml
+
+Le premier argument est le prefix de toutes les images de la video, et le deuxième est le xml résultat. S'il n'existe pas il sera créé.
+
+Comment s'en servir:
+- touches droite et gauche pour parcourir les frames
+- Tirer un rectangle pour le créer
+- S'il y a plusieurs rectangles dans une frame, celui qui le plus proche au cursor est "selectionné" et donc affiché en bleu. Les autres sont rouges
+- Pour bouger un rectangle, mettre la souris à peu près dans son centre, et le tirer avec la souris
+- Pour déplacer un coin, le tirer
+- Pour supprimer un rectangle, le tirer en dehors de la fenêtre (une poubelle parait)
+- Les numéros affichés ne sont pas les classes d'actions, mais les "numéros" des action.
+- Pour changer le numéro d'un rectangle, le sélectionner, cliquer droite et tenir, déplacer la souris vers le bas
+- Dans la listbox à droite on trouve la liste de toute les actions. En cliquant sur une action, on peut choisir sa classe
+
+Pour propager les rectangles d'une frame à la frame suivante, utiliser la touche ESPACE au lieu de la flèche droite. Si la frame suivante n'a pas déjà des rectangles, les rectangles de la frame courante sont copiés.
+
+Pour forcer la propagation des rectangles d'une frame à la frame suivante, en écrasant les rectangles qui se trouvent dans la frame suivante, utiliser la touche "f".
+
+Liste des touches actives:
+ - flèche droite : image suivante
+ - flèche gauche : image précédente
+ - page suivante : sauter 25 images
+ - page précédente : revenir 25 images en arrière
+ - espace : propager les rectangles de l'image courante sur l'image suivante
+ - 'f' :  propager les rectangles de l'image courante sur l'image suivante en écrasant les rectangles déjà présent
+ - '1' à '9' : affecter un numéro d'action au rectangle sélectionné (bleu) 
+ - 'd' : supprimer le rectangle sélectionné (bleu)
+ - 'D' : supprimer tous les rectangles de l'image
+
+
+ACTREADER
+
+Le programme actreader.py est une version "en lecture seule" de actanno.py. Il permet de lire un fichier xml d'annotation généré par actanno.py.
+
+actreader.py est généré par le script Actanno/resource/makereader.sh.
+
+actreader.py n'utilise pas la librairie de tracking, et ne nécessite donc pas qu'elle soit compilée.
+

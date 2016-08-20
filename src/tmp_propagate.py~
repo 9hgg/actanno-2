@@ -1,0 +1,41 @@
+def nextFramePropCurrentRect(self,propagateId):                    
+	if self.curFrameNr<len(self.filenames)-1:
+		self.curFrameNr+=1     
+
+   
+    	print "Propagating rectangle",propagateId," to new frame"
+	x = len(self.frames[self.curFrameNr].rects)
+        y = len(self.frames[self.curFrameNr-1].rects)
+    	print "we have ",x," objects"      
+    	print "we had  ",y," objects"          
+
+        #self.frames[self.curFrameNr].rects = []           
+	
+	# get old rect to propagate
+        for oldrect in self.frames[self.curFrameNr-1].rects:
+		if oldrect.runid = propagateId:
+			rectToPropagate = oldrect
+			break
+        # get his new position by tracking
+
+	rectPropagated = blablabla
+
+	rectPropagated.runid = oldrect.runid
+
+
+	# update it or add it
+	rectAlreadyExists = False
+	for currentrect in self.frames[self.curFrameNr].rects:
+		if currentrect.runid = propagateId:
+			rectToUpdate = currentrect
+			rectAlreadyExists = True
+			break
+	
+	if rectAlreadyExists:
+		rectToUpdate = rectPropagated
+	else:
+		self.frames[self.curFrameNr].rects.append(rectPropagated)
+    
+
+        self.exportXMLFilename("save.xml")
+        return self.curImage
