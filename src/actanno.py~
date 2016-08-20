@@ -65,6 +65,9 @@ import tkMessageBox
 import os
 import xml.etree.ElementTree as xml
 
+import matplotlib.image as mpimg
+import numpy as np
+
 #BEGCUT
 from minimal_ctypes_opencv import *
 #ENDCUT
@@ -323,13 +326,19 @@ class AAControler:
     def curFrame(self):
 	name,ext=os.path.splitext(self.filenames[self.curFrameNr])
 	if ext == ".png":
-		png = Image.open(self.filenames[self.curFrameNr]).convert('RGB')
-		png.load()
-
-		background = Image.new("RGB", png.size, (255, 255, 255))
-		print "a",len(png.split()),png.size
-		#background.paste(png, mask=png.split()[3]) # 3 is the alpha channel
-		self.curImage = png #background
+		#png = Image.open(self.filenames[self.curFrameNr])#.convert('L')
+		img_matplotlib=mpimg.imread(self.filenames[self.curFrameNr])
+		value_max = np.amax(img_matplotlib)
+		scale = 254. / value_max
+		png = Image.fromarray(np.uint8((img_matplotlib)*scale))
+		print(40*"-")
+		print "format :",png.format
+		print "size :", png.size
+		print "mode :", png.mode
+		#png.load()
+		data = list(png.getdata())
+		print "max(data)", max(data),"min(data)", min(data)
+		self.curImage = png
 	elif ext == ".jpg":
         	self.curImage = Image.open(self.filenames[self.curFrameNr])
 	else:
