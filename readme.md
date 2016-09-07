@@ -1,0 +1,1 @@
+python ./src/actanno.py /home/jogue/workspace/datasets/ONERA.ROOM/one_2016-04-28-17-45-25/bb/bb_exemple.xml /home/jogue/workspace/datasets/ONERA.ROOM/one_2016-04-28-17-45-25/image/000 /home/jogue/workspace/datasets/ONERA.ROOM/one_2016-04-28-17-45-25/depth/0000
