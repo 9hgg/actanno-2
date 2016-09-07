@@ -238,6 +238,7 @@ class AAFrame:
             return SemMousePos(argindex,"g")	
 
 # ***************************************************************************
+
 class AAControler:            
     def __init__(self):
         # An array holding an AAFrame object for each frame of the video
@@ -246,19 +247,50 @@ class AAControler:
         self.runids=[]
         # The nr. of the currently visible frame
         self.curFrameNr=0
+	self.switchActivated = False
         self.videoname=""
-        if len(sys.argv)!=3:
+
+
+        if len(sys.argv)<3:
             self.usage()
-        prefix=sys.argv[1]
-        self.outputfilename=sys.argv[2]
+
+	# rgb
+        prefix=sys.argv[2]	
         self.filenames=sorted(glob.glob(prefix+"*"))
-        # print self.filenames
         if len(self.filenames)<1:
-            print >> sys.stderr, "Did not find any frames! Is the prefix correct?"
+            print >> sys.stderr, "Did not find any rgb frames! Is the prefix correct?"
             self.usage()
         for i in range(len(self.filenames)):
             self.frames.append(AAFrame())
-            
+
+	# if depth
+        if len(sys.argv)==4:
+	    print("USING RGB AND DEPTH")
+	    self.depth_available = True
+	    prefix_depth = sys.argv[3]
+            self.filenames_depth=sorted(glob.glob(prefix_depth+"*"))
+            if len(self.filenames_depth)<1:
+                print >> sys.stderr, "Did not find any depths frames! Is the prefix correct?"
+                self.usage()
+
+	    self.array_rgb2depth_ts = np.zeros(len(self.filenames),dtype=np.int)
+	    for id_img_rgb,filename_rgb in enumerate(self.filenames):
+		ts_rgb = int(filename_rgb.split("-")[-1].split(".")[0])
+		id_img_depth_closest = 0
+		ts_depth_closest = 0
+		for id_img_depth,filename_depth in enumerate(self.filenames_depth):
+		    ts_depth = int(filename_depth.split("-")[-1].split(".")[0])
+		    if abs(ts_rgb-ts_depth)<=abs(ts_rgb-ts_depth_closest):
+			ts_depth_closest = ts_depth
+			id_img_depth_closest = id_img_depth
+		self.array_rgb2depth_ts[id_img_rgb]=id_img_depth_closest
+	    #print self.array_rgb2depth_ts
+	else:
+	    print("USING RGB ONLY")
+	    self.depth_available = False
+	    prefix_depth = ""          
+
+        self.outputfilename=sys.argv[1]  
         # If the given XML file exists, parse it
         if os.path.isfile(self.outputfilename):
             self.parseXML()
@@ -277,7 +309,7 @@ class AAControler:
         
     def usage(self):
         print >> sys.stderr, "usage:"
-        print >> sys.stderr, sys.argv[0],"<framefileprefix> <output-xml-filename>"
+        print >> sys.stderr, sys.argv[0]," <output-xml-filename> <framefileprefix RGB> <framefileprefix depth>"
         sys.exit(1);
     
     # Check the current annotation for validity
@@ -324,25 +356,35 @@ class AAControler:
     # Open the image corresponding to the current frame number,
     # set the property self.curImage, and return it
     def curFrame(self):
-	name,ext=os.path.splitext(self.filenames[self.curFrameNr])
+
+	if self.switchActivated and self.depth_available:
+		# find the depth image whose timestamp is the closer from the rgb image
+		#print "using depth images"
+		name,ext=os.path.splitext(self.filenames_depth[self.array_rgb2depth_ts[self.curFrameNr]])
+		path = self.filenames_depth[self.array_rgb2depth_ts[self.curFrameNr]]
+	else:
+		#print "using rgb images"
+		name,ext=os.path.splitext(self.filenames[self.curFrameNr])
+		path = self.filenames[self.curFrameNr]
+	#print name
 	if ext == ".png":
 		#png = Image.open(self.filenames[self.curFrameNr])#.convert('L')
-		img_matplotlib=mpimg.imread(self.filenames[self.curFrameNr])
+		img_matplotlib=mpimg.imread(path)
 		value_max = np.amax(img_matplotlib)
 		scale = 254. / value_max
 		png = Image.fromarray(np.uint8((img_matplotlib)*scale))
-		print(40*"-")
-		print "format :",png.format
-		print "size :", png.size
-		print "mode :", png.mode
+		#print(40*"-")
+		#print "format :",png.format
+		#print "size :", png.size
+		#print "mode :", png.mode
 		#png.load()
 		data = list(png.getdata())
-		print "max(data)", max(data),"min(data)", min(data)
-		self.curImage = png
+		#print "max(data)", max(data),"min(data)", min(data)
+		self.curImage = png.convert('RGB')
 	elif ext == ".jpg":
         	self.curImage = Image.open(self.filenames[self.curFrameNr])
 	else:
-		print "Extension not supported but trying anyway. [",ext,"]"
+		print "def curFrame(self): Extension not supported but trying anyway. [",ext,"]"
         	self.curImage = Image.open(self.filenames[self.curFrameNr])
        	# print "frame nr. ",self.curFrameNr, "=",self.filenames[self.curFrameNr]
         return self.curImage
@@ -686,31 +728,28 @@ class Example(Frame):
 
                             
         self.runidbox = Listbox(self.parent)
+        self.switchbutton = Button(self.parent, text="SWITCH")
         self.savebutton = Button(self.parent, text="SAVE")
         self.quitbutton = Button(self.parent, text="QUIT")
         self.fnEntry = Entry(self.parent)
         self.grid(sticky=W+E+N+S)
 
 	# position
-        self.canvas.grid(row=0,column=0,rowspan=4)
+        self.canvas.grid(row=0,column=0,rowspan=5)
         self.runidbox.grid(row=0,column=1,sticky=N+S)
         self.fnEntry.grid(row=1,column=1)
-        self.savebutton.grid(row=2,column=1)
-        self.quitbutton.grid(row=3,column=1)
-        self.xscale.grid(row=4,sticky=W+E)
+        self.switchbutton.grid(row=2,column=1)
+        self.savebutton.grid(row=3,column=1)
+        self.quitbutton.grid(row=4,column=1)
+        self.xscale.grid(row=5,sticky=W+E)
 
-
-        # Bindings - for both versions               
+        # bindings
         self.canvas.bind ("<Key-Left>", self.prevFrame)
         self.canvas.bind ("<Key-BackSpace>", self.prevFrame)
         self.canvas.bind ("<Key-Right>", self.nextFrame)        
         self.canvas.bind ("<Next>", self.nextFrameFar)
         self.canvas.bind ("<Prior>", self.prevFrameFar)   # the space key
-        self.quitbutton.bind("<Button-1>", self.quit) 
         self.canvas.bind ("<Motion>", self.mouseMove)
- 
-#BEGCUT
-        # Bindings for the editor only
         self.canvas.bind ("<Button-1>", self.leftMouseDown)
         self.canvas.bind ("<ButtonRelease-1>", self.leftMouseUp)	
         self.canvas.bind ("<Button-3>", self.rightMouseDown)
@@ -734,7 +773,9 @@ class Example(Frame):
         self.runidbox.bind ("<Key-space>", self.nextFrameWProp)   # the space key   
         self.canvas.bind ("<Key-space>", self.nextFrameWProp)   # the space key
         self.runidbox.bind ("<<ListboxSelect>>", self.runidboxClick)        
+        self.switchbutton.bind("<Button-1>", self.activateSwitch)       
         self.savebutton.bind("<Button-1>", self.saveXML)
+        self.quitbutton.bind("<Button-1>", self.quit) 
         
 #ENDCUT        
         
@@ -905,7 +946,13 @@ class Example(Frame):
         self.ct.videoname=self.fnEntry.get()
         self.ct.exportXML()
         self.checkValidity()
-        self.isModified=False        
+        self.isModified=False  
+
+    def activateSwitch(self,event):
+        self.ct.switchActivated = not self.ct.switchActivated 
+        print self.ct.switchActivated
+        self.img = self.ct.curFrame()
+	self.updateAfterJump()
         
     # Remove all rectangles of the current frame
     def deleteAllRects(self,event):
