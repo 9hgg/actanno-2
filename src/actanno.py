@@ -950,7 +950,7 @@ class Example(Frame):
 
     def activateSwitch(self,event):
         self.ct.switchActivated = not self.ct.switchActivated 
-        print self.ct.switchActivated
+        #print self.ct.switchActivated
         self.img = self.ct.curFrame()
 	self.updateAfterJump()
         
