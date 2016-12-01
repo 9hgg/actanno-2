@@ -3,13 +3,30 @@
 
 """
 *****************************************************************************
-LIRIS object annotation tool
+ACTANNO : Object annotation tool
 
-Authors: Christian Wolf, Eric Lombardi, Julien Mille
+LIRIS Authors: Christian Wolf, Eric Lombardi, Julien Mille
 
-#BEGCUT
+ONERA Contributor : Joris Guerry (joris.guerry@onera.fr)
+
+
 Changelog:
 
+09.09.16 jg: 
+	     - add gray image PNG compatibility
+	     - add keyboard shortcut : q -> quit
+	     - add keyboard shortcut : s -> save
+	     - add keyboard shortcut : p -> force propagate only the bounding box hovered (with the focus). Allows to make a new bounding box from the beginning and propagate it without impacting the others.
+	     - add scroll bar at bottom to visualise the movie
+	     - change the export format : add the file name in XML (for external use)
+	     - add RGBD features :
+		- files must be at format numFrame_timestamp.ext
+		- ./actanno.py <xml file> <rgb prefix> [optional: <depth prefix>]
+		- add switch button to show the depth image closest to the current rgb image
+		- 
+	     - rectangle can go at the edge of the window without disappear
+	     - change tostring -> tobytes in src/minimal_ctypes_opencv.py (due update of opencv)
+##################################################################################################################
 10.09.14 el: - Fix performance issue (slow-down when first rectangles are drawn). 
 03.09.14 el: - Replace 'moving arrows' image by a circle around anchor points, to provide better 
                visibility in small boxes ; change anchor points activation distance to allow
@@ -49,17 +66,15 @@ Changelog:
 30.08.11 cw: Add XML parser
 02.07.11 cw: begin development
 
-List of known bugs:
-#ENDCUT
 *****************************************************************************
 """
 
 from Tkinter import Tk, Canvas, Frame, BOTH, Listbox, Toplevel, Message, Button, Entry, Scrollbar, Scale, IntVar
 from Tkinter import N,S,W,E,NW, SW, NE, SE, CENTER, END, LEFT, RIGHT, X, Y, TOP, BOTTOM, HORIZONTAL
-import Image
-import ImageDraw
-import ImageFont
-import ImageTk
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
+from PIL import ImageTk
 import sys, glob, copy
 import tkMessageBox
 import os
@@ -136,7 +151,7 @@ class AARect:
     def show(self):
         print "x1=", self.x1, "  y1=", self.y1, "  x2=", self.x2, "  y2=", self.y2, "  id=", self.runid
 
-#BEGCUT
+
 # ***************************************************************************
 # C type matching Python type
 class c_AARect(ctypes.Structure):
@@ -155,7 +170,7 @@ def to_c_AARect(r):
 # convert c_AARect to AARect
 def to_AARect(c_r):
 	return AARect( c_r.x1, c_r.y1, c_r.x2, c_r.y2, c_r.runid)
-#ENDCUT
+
 
 
 # ***************************************************************************
@@ -405,7 +420,7 @@ class AAControler:
         # propagate the previous ones
         if doPropagate:
             x=len(self.frames[self.curFrameNr].rects)
-#BEGCUT            
+           
             print "we have",x,"frames"          
             if x>0 and not force :
                 print "No propagation, target frame is not empty"
@@ -446,7 +461,7 @@ class AAControler:
 
                 else:
                     print "No frames to propagate"
-#ENDCUT                    
+                    
         else:
             self.curFrame()
         self.exportXMLFilename("save.xml")
@@ -777,7 +792,7 @@ class Example(Frame):
         self.savebutton.bind("<Button-1>", self.saveXML)
         self.quitbutton.bind("<Button-1>", self.quit) 
         
-#ENDCUT        
+       
         
         # Variable inits
         self.state=""
@@ -803,21 +818,18 @@ class Example(Frame):
         self.ct.videoname=self.fnEntry.get()
 
         ok=True
-#BEGCUT                
+              
         if self.isModified:
             if tkMessageBox.askyesno( title='Unsaved changes', message='The annotation has been modified. Do you really want to quit?'):
                 tkMessageBox.showinfo ("First help","A backup of the latest changes can be found in save.xml, just in case.")            
             else:
                 ok=False
-                
-#ENDCUT                
+                               
         if ok:
-#BEGCUT        
-        
+
             # close tracking library
             if trackingLib != None:
-                trackingLib.close_lib() 
-#ENDCUT                
+                trackingLib.close_lib()           
             self.parent.destroy()
 
 
@@ -879,7 +891,7 @@ class Example(Frame):
         # keep all keyboard events once they were selected.
         self.canvas.focus_force()
 
-#BEGCUT  
+
 
         if self.state=="d":
             # We currently draw a rectangle
@@ -1068,7 +1080,7 @@ class Example(Frame):
             self.displayRunIds() 
             self.isModified=True
         
-#ENDCUT
+
 
     # draw an anchor point at (x, y) coordinates
     def drawAnchorPoint(self, draw, x, y, size=5, color="cyan"):
@@ -1109,7 +1121,7 @@ class Example(Frame):
             draw.rectangle([r.x1+1, r.y1+1, r.x2-1, r.y2-1], outline=curcol)
             draw.text([r.x1+3, r.y1+2], str(r.runid), font=self.imgFont, fill=curcol)
 
-#BEGCUT            
+        
             # Draw the icons 
             if i == sempos.index:
                 if sempos.sempos == "ul":
@@ -1124,7 +1136,7 @@ class Example(Frame):
                     cx=0.5*(r.x1+r.x2)
                     cy=0.5*(r.y1+r.y2)
                     self.drawAnchorPoint(draw, cx, cy)
-#ENDCUT
+
         del draw
         self.drawPhoto = ImageTk.PhotoImage(drawFrame)
         self.canvas.create_image(0, 0, anchor=NW, image=self.drawPhoto)	
@@ -1138,7 +1150,7 @@ class Example(Frame):
             else:
                 self.runidbox.insert(END, str(i+1)+" has class "+str(x[i])+" ["+classnames[x[i]-1]+"]")
                
-#BEGCUT               
+              
     # a listbox item has been clicked: choose the object class for 
     # a given object
     def runidboxClick(self,event):                            
@@ -1182,7 +1194,7 @@ class Example(Frame):
         self.choseRunId(event,9)
     def choseRunId10(self,event):
         self.choseRunId(event,10)
-#ENDCUT
+
 
     def debugEvent(self, title):
         self.eventcounter += 1
@@ -1199,7 +1211,7 @@ trackingLib = None
 
 def main():
     curPath=sys.path[0]
-#BEGCUT
+
     global trackingLib
     print "Script installed at: ",curPath        
     
@@ -1224,7 +1236,7 @@ def main():
     else:
         print "Failed to load JM tracking library."
     print trackingLib
-#ENDCUT
+
 
     root = Tk()
     root.protocol("WM_DELETE_WINDOW", onexit) 

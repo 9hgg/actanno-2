@@ -304,7 +304,8 @@ def cvCreateImageFromPilImage(pilimage):
         raise TypeError("Don't know how to convert the image. Check its bands and/or its mode.")
     img = cvCreateImageHeader(cvSize(pilimage.size[0], pilimage.size[1]), depth, nchannels)
     step = pilimage.size[0] * nchannels * elem_size
-    data = pilimage.tostring(decoder, mode, step)
+    #data = pilimage.tostring(decoder, mode, step)
+    data = pilimage.tobytes(decoder, mode, step)
     cvSetData(img, data, step)
     img._depends = (data,)
     return img
