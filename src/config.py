@@ -30,6 +30,9 @@ __C.D_PREFIX = "default"
 __C.XML_PREFIX = "default"
 __C.CLASSES = ['null']
 __C.VOC_DIR = "default"
+__C.FOLDER_NAME = "default"
+__C.DATASET_NAME = "default"
+__C.OWNER = "default"
 
 def _merge_a_into_b(a, b):
     """Merge config dictionary a into config dictionary b, clobbering the
