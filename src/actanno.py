@@ -1,4 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+
+#####!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 from Tkinter import Tk, Canvas, Frame, BOTH, Listbox, Toplevel, Message, Button, Entry, Scrollbar, Scale, IntVar
@@ -48,6 +50,40 @@ classnames = ["null"]
 
 # Return the the given tag in the given tree, and ensure that this tag is
 # present only a single time.
+bindings="\
+		--------------------------------------------------------\n \
+		Navigation : \n \
+			<Key-Left> : prevFrame \n \
+			<Key-BackSpace> : prevFrame \n \
+			<Key-Right> : nextFrame \n \
+			<Next> : nextFrameFar \n \
+			<Prior> : prevFrameFar \n \
+		----------------------------\n \
+		Save and quit : \n \
+			q : quit \n \
+			s : saveXML \n \
+		--------------------------------------------------------\n \
+		Propagation : \n \
+			f : go to next frame + force propagation \n \
+			p : go to next frame + force propagation of rectangle with focus \n \
+			<Key-space> : go to next frame + propagation (no forcing)\n \
+		--------------------------------------------------------\n \
+		Deletion : \n \
+			d : delete rectangle with focus \n \
+			D : delete all rectangles \n \
+		--------------------------------------------------------\n \
+		Select objects : \n \
+			1 : choseobjectId1 \n \
+			2 : choseobjectId2 \n \
+			3 : choseobjectId3 \n \
+			4 : choseobjectId4 \n \
+			5 : choseobjectId5 \n \
+			6 : choseobjectId6 \n \
+			7 : choseobjectId7 \n \
+			8 : choseobjectId8 \n \
+			9 : choseobjectId9 \n \
+			0 : choseobjectId10 \n"
+
 
 
 def getSingleTag(tree, tagname):
@@ -203,13 +239,15 @@ class AAControler:
 		# The nr. of the currently visible frame
 		self.curFrameNr = 0
 		self.switchActivated = False
-		self.videoname = ""
+		#self.videoname = ""
 
 		if len(sys.argv) < 1:
 			self.usage()
 
 		# dataset name
 		self.datasetName = cfg.DATASET_NAME
+		self.videoname = cfg.FOLDER_NAME
+		print "self.videoname=",self.videoname
 		# owner name
 		self.owner = cfg.OWNER
 		# folder name
@@ -281,12 +319,12 @@ class AAControler:
 		# Keep a dictionary which holds for each activity the framenr of the
 		# last frame
 		acts = {}
-		for (frnr,fr) in enumerate(self.frames):
-			for r in fr.rects:
-				if r.objectId in acts:
-					if frnr-acts[r.objectId] > 1:
-						msg = msg+"Activity nr. "+str(r.objectId)+" has a hole after frame nr. "+str(acts[r.objectId])+".\n"
-				acts[r.objectId] = frnr;
+		#for (frnr,fr) in enumerate(self.frames):
+		#	for r in fr.rects:
+		#		if r.objectId in acts:
+		#			if frnr-acts[r.objectId] > 1:
+		#				msg = msg+"Activity nr. "+str(r.objectId)+" has a hole after frame nr. "+str(acts[r.objectId])+".\n"
+		#		acts[r.objectId] = frnr;
 
 		# Check for several occurrences of a objectId in the same frame.
 		for (frnr,fr) in enumerate(self.frames):
@@ -630,12 +668,12 @@ class AAControler:
 		vid=vids[0]
 
 		# Get the video name
-		x=getSingleTag(vid,"videoName")
-		if (x.text is None) or (len(x.text)==0) or (x.text=="NO-NAME"):
-			tkMessageBox.showinfo(TITLE, "The video name in the given XML file is empty. Please provide the correct name before saving the file.")
-			self.videoname="NO-NAME"
-		else:
-			self.videoname=x.text
+		#x=getSingleTag(vid,"videoName")
+		#if (x.text is None) or (len(x.text)==0) or (x.text=="NO-NAME"):
+		#	tkMessageBox.showinfo(TITLE, "The video name in the given XML file is empty. Please provide the correct name before saving the file.")
+		#	self.videoname="NO-NAME"
+		#else:
+		#	self.videoname=x.text
 
 		# Get all the objects
 		objectnodes=vid.findall("object")
@@ -727,7 +765,7 @@ class Example(Frame):
 		self.savebutton = Button(self.parent, text="SAVE")
 		self.export2voc = Button(self.parent, text="EXPORT2VOC")
 		self.quitbutton = Button(self.parent, text="QUIT")
-		self.fnEntry = Entry(self.parent)
+		self.fnEntry = Entry(self.parent)#, state='readonly')
 		self.grid(sticky=W+E+N+S)
 
 		# position
@@ -1148,7 +1186,8 @@ class Example(Frame):
 	def objectIdboxClick(self,event):
 		self.clickedobjectId = self.objectIdbox.curselection()
 		top = self.classDlg = Toplevel()
-		top.geometry("400x400+"+str(self.winfo_rootx())+"+"+str(self.winfo_rooty()))
+		lengthOfDialogBox=25*len(classnames)
+		top.geometry("400x"+str(lengthOfDialogBox)+"+"+str(self.winfo_rootx())+"+"+str(self.winfo_rooty()))
 		top.title("Enter class label for chosen object")
 		classId = 0
 		for classname in classnames:
