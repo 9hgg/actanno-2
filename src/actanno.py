@@ -1251,7 +1251,13 @@ def main():
 	cfg_file=sys.argv[1]
 	print "Loading config from", cfg_file
 	cfg_from_file(cfg_file)
+	print "Configuration :"
 	print cfg
+	print cfg.keys()
+	print cfg.values()
+	print "OWNER(S) ::::::::"
+	print cfg.OWNER
+	print "Classes :"
 	classnames = cfg.CLASSES
 	print classnames
 
