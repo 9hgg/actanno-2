@@ -292,8 +292,13 @@ class AAControler:
 
 		self.outputfilename=cfg.MAIN_DIR+cfg.XML_PREFIX
 		# If the given XML file exists, parse it
+
+		if not os.path.isdir(os.path.dirname(self.outputfilename)):
+			os.makedirs(os.path.dirname(self.outputfilename))
+
 		if os.path.isfile(self.outputfilename):
-			self.parseXML()
+			if os.stat(self.outputfilename).st_size>0:
+				self.parseXML()
 		else:
 			# If it does NOT exist, let's try to create one
 			try:
@@ -1253,13 +1258,7 @@ def main():
 	cfg_from_file(cfg_file)
 	print "Configuration :"
 	print cfg
-	print cfg.keys()
-	print cfg.values()
-	print "OWNER(S) ::::::::"
-	print cfg.OWNER
-	print "Classes :"
 	classnames = cfg.CLASSES
-	print classnames
 
 
 	# load C++ JM tracking library
