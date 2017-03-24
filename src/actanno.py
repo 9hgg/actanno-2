@@ -1252,10 +1252,15 @@ def main():
 	global trackingLib
 	#print "Script installed at: ",curPath
 
-
-	cfg_file=sys.argv[1]
+	folder_path = sys.argv[1]
+	cfg_file=folder_path+'config.yml'
 	print "Loading config from", cfg_file
 	cfg_from_file(cfg_file)
+	cfg.MAIN_DIR=folder_path
+
+	from os.path import normpath, basename
+	cfg.FOLDER_NAME = basename(normpath(folder_path))
+	cfg.MAIN_DIR=folder_path
 	print "Configuration :"
 	print cfg
 	classnames = cfg.CLASSES
@@ -1270,7 +1275,6 @@ def main():
 		# ---- Linux
 		else:
 			trackingLib = ctypes.CDLL(curPath+"/boxtracking/libboxtracking.so")
-
 	# ---- Windows
 	elif os.name == 'nt':
 		trackingLib = ctypes.CDLL(curPath+"/boxtracking/libboxtracking.dll")

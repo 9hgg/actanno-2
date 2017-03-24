@@ -1,9 +1,0 @@
-DATASET_NAME: 'ONERA.ROOM'
-OWNER: 'Joris GUERRY & Bertrand LE SAUX (ONERA)'
-MAIN_DIR: '/home/jogue/workspace/datasets/ONERA.ROOM/RGBD/2015-09-18-16-08-12/'
-FOLDER_NAME: '2015-09-18-16-08-12'
-VOC_DIR: 'bb/voc/'
-XML_PREFIX: 'bb/bb.xml'
-RGB_PREFIX: 'image/0'
-D_PREFIX: 'depth_8bits/0'
-CLASSES: ["null", "bag", "bike", "box", "cabinet", "car", "ceiling", "chair", "computer", "door", "emergency sign", "extinguisher", "floor", "lamp", "paper", "person", "phone", "poster", "screen", "shelf", "table", "wall", "whiteboard", "window"]
