@@ -23,6 +23,18 @@ from minimal_ctypes_opencv import *
 from config import cfg
 from config import cfg_from_file
 
+
+def mkdir_p(path):
+	import errno
+	try:
+		os.makedirs(path)
+	except OSError as exc:  # Python >2.5
+		if exc.errno == errno.EEXIST and os.path.isdir(path):
+			pass
+		else:
+			raise
+
+
 # ***************************************************************************
 # Global constants
 # ***************************************************************************
@@ -586,7 +598,6 @@ class AAControler:
 			for (j,r) in enumerate(f.getRects()):
 				if r.objectId > maxid:
 					maxid=r.objectId
-
 		try:
 			fd=open(filename,'w')
 		except:
@@ -618,6 +629,8 @@ class AAControler:
 		fd.close()
 
 	def exportXML2voc(self):
+		print "Exporting..."
+		mkdir_p(self.vocPath)
 		for (i,f) in enumerate(self.frames):
 			head, tail = os.path.split(self.filenames[i])
 			filename = self.vocPath+tail[:-3]+"xml"
@@ -657,6 +670,8 @@ class AAControler:
 
 			print >> fd, "</annotation>"
 			fd.close()
+
+		print "Done !"
 
 	def parseXML(self):
 		tree = xml.parse(self.outputfilename)
