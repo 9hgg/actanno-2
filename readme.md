@@ -49,13 +49,13 @@ Changelog:
 ##################################################################################################################
 
 10.09.14 el:
--Fix performance issue (slow-down when first rectangles are drawn).
+- Fix performance issue (slow-down when first rectangles are drawn).
 
 03.09.14 el:
--Replace 'moving arrows' image by a circle around anchor points, to provide better visibility in small boxes ; change anchor points activation distance to allow smaller boxes.
+- Replace 'moving arrows' image by a circle around anchor points, to provide better visibility in small boxes ; change anchor points activation distance to allow smaller boxes.
 
 03.09.14 el:
--Changing the classes is made easier: it only requires to modify the 'classnames' variable ; the class menu is now dynamically built from the content of the 'classnames' variable, and does'nt need anymore to be changed by hand.
+- Changing the classes is made easier: it only requires to modify the 'classnames' variable ; the class menu is now dynamically built from the content of the 'classnames' variable, and does'nt need anymore to be changed by hand.
 
 14.12.11 cw:
 - Bugfix in actreader version : remove imgTrash and imgMove and references to it
