@@ -18,7 +18,11 @@ REPOSITORY github.com/jorisgu/actanno-2 OR IF NOT AVAILABLE:
 
 "RCNN RGBD pour la détection de personnes en conditions difficiles", J.Guerry and B. Le Saux and D. Filliat,
 Groupe d'Etudes du Traitement du Signal et des Images (GRETSI) 2017
+
+
 and
+
+
 "Evaluation of video activity localizations integrating quality and quantity measurements", C Wolf, J. Mille, E. Lombardi, O. Celiktutan, M. Jiu, E. Dogan, G. Eren, M. Baccouche, E. Dellandrea, C.-E. Bichot, C. Garcia, B. Sankur
 In Computer Vision and Image Understanding (127):14-30, 2014. 
 
