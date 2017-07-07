@@ -16,8 +16,8 @@ Please contact the ONERA [www.onera.fr/en/contact-us](www.onera.fr/en/contact-us
 PLEASE ACKNOWLEDGE THE AUTHORS AND PUBLICATION ACCORDING TO THE
 REPOSITORY github.com/jorisgu/actanno-2 OR IF NOT AVAILABLE:
 
->"RCNN RGBD pour la détection de personnes en conditions difficiles"
->><cite>J.Guerry and B. Le Saux and D. Filliat</cite>,Groupe d'Etudes du Traitement du Signal et des Images (GRETSI) 2017
+>"Look At This One: Detection sharing between modality-independent classifiers for robotic people discovery"
+>><cite>J.Guerry and B. Le Saux and D. Filliat</cite>,European Conference on Mobile Robotics (ECMR) 2017
 
 and
 
@@ -28,7 +28,7 @@ and
 
 For research and non commercial purposes, all the code and documentation of github.com/jorisgu/actanno-2 is released under the GPLv3 license:
 
-RCNN RGBD pour la détection de personnes en conditions difficiles
+Detection sharing between modality-independent classifiers for robotic people discovery
 Copyright (C) 2017 ONERA, Joris Guerry, Bertrand Le Saux, David Filliat
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or any later version.
