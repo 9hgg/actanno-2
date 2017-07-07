@@ -4,16 +4,17 @@
 *****************************************************************************
 ACTANNO : Object annotation tool
 
-LIRIS Authors: Christian Wolf, Eric Lombardi, Julien Mille
-Actanno V1 
+Actanno V2 
+ONERA Author : Joris Guerry (joris.guerry@onera.fr)
 
-ONERA Contributor : Joris Guerry (joris.guerry@onera.fr)
+Actanno v2 inherits from [Actanno V1](http://liris.cnrs.fr/voir/activities-dataset/index.html): 
+LIRIS Authors: Christian Wolf, Eric Lombardi, Julien Mille
 
 PLEASE ACKNOWLEDGE THE AUTHORS AND PUBLICATION ACCORDING TO THE
 REPOSITORY github.com/jorisgu/actanno-2 OR IF NOT AVAILABLE:
 
->"RCNN RGBD pour la détection de personnes en conditions difficiles"
->><cite>J.Guerry and B. Le Saux and D. Filliat,</cite>,Groupe d'Etudes du Traitement du Signal et des Images (GRETSI) 2017
+>"Look at this one: Detection sharing between modality-independent classifiers for robotic people discovery"
+>><cite>J.Guerry and B. Le Saux and D. Filliat,</cite>,European Conference on Mobile robotics (ECMR) 2017
 
 and
 
